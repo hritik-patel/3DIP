@@ -16,7 +16,7 @@ GRID_SIZE = 5
 COLOURS = {
     "red": "#ff0000",
     "green": "#00ff00",
-    "blue": "#00D8FF",
+    "blue": "#00D8FF",  
     "yellow": "#ffff00"
 }
 #Number of levels in the game
@@ -47,12 +47,12 @@ class MainMenu: #Create the MainMenu class
         if selected_game == "Colour Match Game": #If Colour Match Game is selected in the combobox
             self.master.destroy() #Destroy the main menu window
             root = tk.Tk() 
-            game = ColourMatchGame(root)
+            ColourMatchGame(root)
             root.mainloop()
         elif selected_game == "Higher Lower Game": #If Higher Lower Game is selected
             self.master.withdraw() #Essentially iconffying the game, minimising it or moving it to the background out of focus
             self.game_window = tk.Toplevel(self.master)  #Create a Toplevel window for the game so it is in focus
-            game = HigherLowerGame(self.game_window, self) 
+            HigherLowerGame(self.game_window, self) 
             self.game_window.mainloop()
 
 
@@ -61,7 +61,7 @@ class ColourMatchGame: #Create the ColourMatchGame class
     def __init__(self, master): #Construct the parts that make up ColourMatchGame class
         self.master = master
         self.master.title("Colour Match Game") #Name of the window
-        self.master.geometry("550x750") #Size of the game window
+        self.master.geometry("550x775") #Size of the game window
         self.master.resizable(False, False) #Game window cannot be resized so things inside don't move around
         self.level = 1 #Set the starting level to 1
         self.start_time = None #Set time to None
@@ -235,7 +235,7 @@ class ColourMatchGame: #Create the ColourMatchGame class
         #Show the main menu and close the game window
         self.master.destroy()  #Destroy the current game window
         root = tk.Tk()  #Create a new main menu window
-        main_menu = MainMenu(root)  #Start the main menu
+        MainMenu(root)  #Start the main menu
         root.mainloop()
 
     def replay_game(self):
@@ -243,7 +243,7 @@ class ColourMatchGame: #Create the ColourMatchGame class
         self.end_screen.destroy() #Destroy the end game screen window
         self.master.destroy() #Destroy the current game window
         root = tk.Tk() #Create a new game window
-        game = ColourMatchGame(root) #Start the game
+        ColourMatchGame(root) #Start the game
         root.mainloop()
 
     def update_timer(self):
@@ -257,7 +257,7 @@ class HigherLowerGame: #Create the higher lower game class
     def __init__(self, master, main_menu): #Construct the HigherLowerGame class
         self.master = master  #The Tkinter root window for the game
         self.master.title("Higher or Lower Game")  #Set the window title to Higher or Lower game
-        self.master.geometry("450x300")  #Set the window size
+        self.master.geometry("500x300")  #Set the window size
         self.master.resizable(False, False)  #Disable window resizing so the game doesnt break
         self.main_menu = main_menu  #The MainMenu instance to go back to the main menu if needed
 
@@ -319,7 +319,7 @@ class HigherLowerGame: #Create the higher lower game class
 
     def get_value(self, choice): #Get the value of the attribute for a given choice (million followers for celebrities, billion net worth for companies)
         attribute = self.get_attribute()
-        if attribute and attribute in choice:
+        if attribute in choice:
             return choice[attribute]
         else:
             return 0
@@ -338,7 +338,7 @@ class HigherLowerGame: #Create the higher lower game class
             self.create_incorrect_screen(selected_value, other_value, selected_value - other_value) #Show the incorrect screen
 
     def create_correct_screen(self, higher_value, lower_value, difference_value):
-        self.clear_window()  #Clear the window to for the correct screen
+        self.clear_window() #Clear the window to for the correct screen
 
         label = tk.Label(self.master, text="Correct!", font=("Arial", 16, "bold"), fg="green") #Show "Correct!" label
         label.pack(pady=20)
@@ -353,6 +353,7 @@ class HigherLowerGame: #Create the higher lower game class
 
         choice2_label = tk.Label(self.master, text=f"{self.get_name(self.second_choice)} has {lower_value:,} {attribute_label}", font=("Arial", 12)) #Show the name and value of the other choice
         choice2_label.pack(pady=5)
+
         if difference_value >= 0: #Check if the difference between values is positive
             difference_label = tk.Label(self.master, text=f"{self.get_name(self.first_choice)} has {difference_value:.1f} {attribute_label} more than {self.get_name(self.second_choice)}!", font=("Arial", 12)) #Show the difference between values when it's positive, using .1f for 1dp
         else:
@@ -382,7 +383,7 @@ class HigherLowerGame: #Create the higher lower game class
         choice2_label.pack(pady=5)
 
         if difference_value >= 0: #Check if the difference between values is positive
-            difference_label = tk.Label(self.master, text=f"{self.get_name(self.first_choice)} has {abs(difference_value):.1f} {attribute_label} less than {self.get_name(self.second_choice)}!", font=("Arial", 12)) #Show the difference between values when it's positive, using .1f for 1dp
+            difference_label = tk.Label(self.master, text=f"{self.get_name(self.first_choice)} has {(difference_value):.1f} {attribute_label} less than {self.get_name(self.second_choice)}!", font=("Arial", 12)) #Show the difference between values when it's positive, using .1f for 1dp
         else:
             difference_label = tk.Label(self.master, text=f"{self.get_name(self.first_choice)} has {abs(difference_value):.1f} {attribute_label} less than {self.get_name(self.second_choice)}!", font=("Arial", 12)) #Show the difference between values when it's negative (use abs to get the positive value by removing negative sign), using .1f for 1dp
         difference_label.pack(pady=5) 
@@ -395,7 +396,6 @@ class HigherLowerGame: #Create the higher lower game class
 
         main_menu_button = tk.Button(self.master, text="Main Menu", command=self.show_main_menu) #Create a button to go back to the main menu
         main_menu_button.pack(pady=10)
-
 
     def next_round(self): #Get new data and choices for the next round
         self.clear_window() #Clear the current window
